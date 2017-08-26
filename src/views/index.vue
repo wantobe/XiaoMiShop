@@ -1,0 +1,92 @@
+<template>
+  <div class="app">
+    <div :style="indexStyle" ref="index">
+      <mi-load :load="load"></mi-load>
+      <!--<mi-header @searchEvent="searchHandle" :opac="headerOpacity"></mi-header>-->
+      <div v-show="a"><!--模拟loading效果-->
+        <mi-menu :menu="menu"></mi-menu>
+        <mi-body :body="body"></mi-body>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import util from '../../lib/util';
+  import load from '../components/loading';
+//  import header from '../components/index/header';
+  import menu from '../components/index/menu';
+  import body from '../components/index/body';
+  import data from '../../data';
+  export default {
+    components: {
+//      'mi-header': header,
+      'mi-menu': menu,
+      'mi-body': body,
+      'mi-load': load
+    },
+    created () {
+      var me = this;
+      setTimeout(function () {
+        me.a = true;
+      }, 2000);
+      me.banner = data.banner;
+      me.menu = data.menu;
+      me.body = data;
+    },
+    mounted () {
+      var me = this;
+      console.log(util.screenSize());
+      this.c_height = 0.711 * util.screenSize().width;
+      var height = util.screenSize().width * 256 / 360;
+      this.$refs.index.onscroll = function () {
+        me.headerOpacity = this.scrollTop / height;
+      };
+    },
+    data () {
+      return {
+        banner: {},
+        menu: {},
+        body: {},
+        bannerList: [],
+        scrollX: 0,
+        scrollY: 0,
+        searchState: false,
+        headOpac: '',
+        load: false,
+        a: false,
+        c_height: 0,
+        indexStyle: {
+          height: util.screenSize().height + 'px',
+          'overflow-y': 'scroll',
+          width: '100%'
+        },
+        headerOpacity: 0
+      };
+    },
+    methods: {
+      searchHandle (Boolean) {
+        if (Boolean) {
+          this.searchState = true;
+        } else {
+          this.searchState = false;
+        }
+      }
+    }
+  };
+</script>
+
+<style lang="less" scoped>
+  .app {
+    overflow-y: scroll;
+    width: 100%;
+    height: 100%;
+  }
+
+  .banner-img {
+    width: 100%;
+    img {
+      width: 100%;
+    }
+  }
+</style>
