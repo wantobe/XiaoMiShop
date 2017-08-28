@@ -1,21 +1,20 @@
 <template>
-  <div class="star-box">
+  <div class="goods-box">
     <div class="starBanner">
       <a :href="goodsData.bannerLink"><img :src="goodsData.bannerImg"/></a>
     </div>
-
-    <el-row :gutter="10" class="goodslist">
+    <el-row :gutter="10" class="goodslist" v-loading="loading">
       <el-col :span="12"
-              v-for="(good, index) in goodsData.list"
+              v-for="(goods, index) in goodsData.list"
               class="item"
       >
-        <div class="item-content" @click="productEvent">
+        <div class="item-content" @click="productEvent(goods)">
           <div class="top">
-            <img :src="good.imgSrc"/>
+            <img :src="goods.imgSrc"/>
           </div>
           <div class="bottom">
-            <span class="title">{{ good.title }}</span>
-            <span class="price">{{good.points}} <span>积分 +</span> ￥{{ good.price }}</span>
+            <span class="title">{{ goods.title }}</span>
+            <span class="price">{{goods.points}} <span>积分 +</span> ￥{{ goods.price }}</span>
             <el-button class="btn" size="small" type="primary">兑换</el-button>
           </div>
         </div>
@@ -26,29 +25,47 @@
 </template>
 <script>
   export default{
-    props: ['body'],
     created () {
       if (this.$route.params.cateId) {
         this.cateId = this.$route.params.cateId;
       }
-      this.goodsData = this.body.goods[this.cateId];
+      this.fetchData(this.$root.api.goods, this.cateId);
     },
     data () {
       return {
         cateId: '001',
-        goodsData: {}
+        goodsData: {},
+        loading: true
       };
     },
     methods: {
-      productEvent () {
-        this.$router.push({path: '/detail'});
+      productEvent (goods) {
+        this.$router.push({path: '/detail/' + goods.id});
+        this.$root.$emit('currentgoods', goods);
+      },
+      fetchData (url, id) {
+        let vm = this;
+        this.$http.get(url, {
+          params: {cateId: id}
+        })
+          .then(response => {
+            console.log('list', response.data);
+            vm.loading = false;
+            vm.$root.$emit('loadingstatus', false);
+            vm.goodsData = response.body.data;
+          })
+          .catch(response => {
+            vm.loading = false;
+            vm.$root.$emit('loadingstatus', true);
+          });
       }
     },
     watch: {
-      '$route': function (to, from) {
+      '$route': function (to) {
         this.cateId = to.params.cateId;
         if (this.cateId) {
-          this.goodsData = this.body.goods[to.params.cateId];
+          this.loading = true;
+          this.fetchData(this.$root.api.goods, this.cateId);
         }
       }
     }
@@ -107,8 +124,6 @@
         width:100%;
         letter-spacing: 5px;
         margin: 10px auto;
-        background: #FC7439;
-        border:none;
       }
     }
   }
@@ -117,8 +132,9 @@
       width: 100%;
     }
   }
-  .star-box {
+  .goods-box {
     overflow: hidden;
+    height: 100%;
     width: 100%;
     font-family: "Microsoft Yahei";
     .starBanner {

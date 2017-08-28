@@ -57,7 +57,7 @@ export default {
     goBackEvent () {
       this.focus = false;
       this.$emit('searchEvent', false);
-      this.$router.push('/');
+      this.$router.go(-1);
     },
     inputFillEvent (word) {
       this.inputText = word;

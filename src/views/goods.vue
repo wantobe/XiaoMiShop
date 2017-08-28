@@ -1,22 +1,8 @@
 <template>
   <div class="wripper">
     <mi-img></mi-img>
-    
     <mi-buyControl :goodsAttr="goodsAttr" ref="control"></mi-buyControl>
     <mi-detail :detailData="detailData"></mi-detail>
-    <div class="addCart">
-      <div class="home"@click="toHomeEvent"></div>
-      <div class="add"><span @click="butEvent">加入购物车</span></div>
-      <div class="cart"@click="addCartEvent"></div>
-    </div>
-    
-    <mi-model ref="alert" type="alert" @confirmEvent="alertBtnEvent">
-      <div slot="alert" class="alert">
-        <h5>您选择的产品</h5>
-        <h6>{{ popInfo.title }}</h6>
-        <p>{{ popInfo.ram }}　　{{ popInfo.color }}</p>
-      </div>
-    </mi-model>
   </div>
 </template>
 <script>
@@ -24,13 +10,12 @@
   import buyControl from '../components/goods/buyControl';
   import detail from '../components/goods/detail';
   import data from '../../data';
-  import model from '../components/model';
+
   export default {
     components: {
       'mi-img': img,
       'mi-buyControl': buyControl,
-      'mi-detail': detail,
-      'mi-model': model
+      'mi-detail': detail
     },
     created () {
       this.detailData = data.detail;
@@ -48,26 +33,13 @@
       toHomeEvent () {
         this.$router.replace({path: '/index'});
       },
-      butEvent () {
-        var checkInfo = this.$refs.control.submitBuyInfo();
-        var info = {};
-        info.title = data.detail.goodsAttr.title;
-        info.ram = checkInfo.ram.text;
-        info.color = checkInfo.color.text;
-        this.popInfo = info;
-        this.$refs.alert.modelOpen();
-      },
-      addCartEvent () {
-        this.$router.replace({path: '/cart'});
-      },
       searchHandle (Boolean) {
         if (Boolean) {
           this.searchState = true;
         } else {
           this.searchState = false;
         }
-      },
-      alertBtnEvent () {}
+      }
     }
   };
 </script>

@@ -18,6 +18,7 @@
 
 <style lang="less" scoped>
   .body-box {
+    height:100%;
     background: #efefef;
   }
 </style>

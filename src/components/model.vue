@@ -130,7 +130,7 @@
                 .main {
                     display: inline-block;
                     text-align: left;
-                    width: 70%;
+                    width: 80%;
                     transition: all 0.3s ease;
                     .pop {
                         background: #fff;
@@ -179,9 +179,9 @@
                                 height: 100%;
                                 background: #fff;
                                 border: none;
-                                border-top: 1px solid #56aeb0;
+                                border-top: 1px solid #ff8000;
                                 font-size: 17px;
-                                color: #108d93;
+                                color: #ff8000;
                                 border-radius: 0 0 10px 10px;
                                 font-family: "微软雅黑";
                                 outline: none;

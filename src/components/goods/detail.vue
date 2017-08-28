@@ -2,7 +2,7 @@
   <div>
     <div class="tab">
       <span :class="{'active': tabState}" @click="tabEvent1">商品详情</span>
-      <span :class="{'active': !tabState}" @click="tabEvent2">参数</span>
+      <span :class="{'active': !tabState}" @click="tabEvent2">温馨提示</span>
     </div>
     <div class="detail" v-show="tabState">
       <img :src="item" v-for="item in detailList"/>

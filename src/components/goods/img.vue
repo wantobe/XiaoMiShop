@@ -2,7 +2,8 @@
   <div class="img">
     <div class="control">
       <div class="left hook" @click="goBackEvent"></div>
-      <div class="right hook" @click="goodSearchEvent"></div>
+      <div class="right hook" @click="addCartEvent"></div>
+      <!--<div class="right hook" @click="goodSearchEvent"></div>-->
     </div>
 
     <div class="swiper-container" ref="a">
@@ -12,7 +13,11 @@
       <div class="swiper-pagination"></div>
     </div>
 
-    <!--<img :src="img"/>-->
+    <!--<el-carousel :interval="5000" arrow="always" class="carousel">-->
+      <!--<el-carousel-item v-for="item in bannerList" :key="item">-->
+        <!--<img :src="item"/>-->
+      <!--</el-carousel-item>-->
+    <!--</el-carousel>-->
   </div>
 </template>
 <script>
@@ -34,6 +39,9 @@
       },
       goodSearchEvent () {
         this.$router.push({path: '/index', query: {sign: 1}});
+      },
+      addCartEvent () {
+        this.$router.push({path: '/cart'});
       }
     },
     mounted () {
@@ -78,11 +86,16 @@
         }
         &.right {
           float: right;
-          background: rgba(0, 0, 0, 0.5) url("../../images/svg/search1.svg") no-repeat center center;
+          /*background: rgba(0, 0, 0, 0.5) url("../../images/svg/search1.svg") no-repeat center center;*/
+          background:  rgba(0, 0, 0, 0.5) url("../../images/svg/cart.svg") no-repeat center center;
           background-size: 15px;
         }
       }
     }
+  }
+
+  .carousel img {
+    width:100%;
   }
 
   .swiper-container {
