@@ -9,22 +9,22 @@
       </div>
     </mi-header>
 
-    <cell style="padding-top:35px; margin-bottom: 0;" dark>
+    <my-cell style="padding-top:35px; margin-bottom: 0;" dark>
       <div slot="cell-left">
         选择收货地址
       </div>
       <div slot="cell-right" @click="addressSelect()">
         <i class="el-icon-arrow-right"></i>
       </div>
-    </cell>
+    </my-cell>
 
-    <cell dark>
+    <my-cell dark>
       <div slot="cell-left">
         <p class="address-item" v-for="item in addressDefault">{{item.key}}: {{item.value}}</p>
       </div>
-    </cell>
+    </my-cell>
 
-    <cell full class="preview-info">
+    <my-cell full class="preview-info">
       <div slot="cell-full">
         <el-row type="flex" justify="space-between">
           <el-col class="thumb" :span="7"><img :src="thumb" alt=""></el-col>
@@ -35,12 +35,12 @@
           </el-col>
         </el-row>
       </div>
-    </cell>
+    </my-cell>
 
-    <cell>
+    <my-cell>
       <div slot="cell-left">数量</div>
       <div slot="cell-right">x{{num}}</div>
-    </cell>
+    </my-cell>
 
     <el-row class="bottom-bar">
       <el-col :span="15" :offset="1">
@@ -75,7 +75,7 @@
     },
     components: {
       'mi-header': header,
-      'cell': cell
+      'my-cell': cell
     },
     created () {
       this.id = this.$route.params.id;
