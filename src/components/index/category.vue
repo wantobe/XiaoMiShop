@@ -12,6 +12,7 @@
         </router-link>
       </el-col>
     </el-row>
+
   </div>
 </template>
 <script>
@@ -40,6 +41,7 @@
 
 <style lang="less" scoped>
   .cate-menu{
+    padding-top: 40px;
     background:white;
     .grid-content{
       text-align: center;
@@ -61,6 +63,9 @@
       }
     }
   }
+
+
+
 
 
 </style>

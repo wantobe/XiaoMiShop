@@ -14,11 +14,23 @@
     },
     watch: {
       '$route' (to, from) {
-        if (/\/index/i.test(to.path) || /\/detail/i.test(to.path) && /\/cart/i.test(from.path)) {
+        console.log(to.path, from.path);
+        if (
+          /\/index/i.test(to.path) ||
+          /\/detail/i.test(to.path) && /\/cart/i.test(from.path) ||
+          /\/detail/i.test(to.path) && /\/order/i.test(from.path) ||
+          /\/order/i.test(to.path) && /\/address/i.test(from.path)
+        ) {
           this.transitionName = 'slide-right';
+          console.log('right');
         }
-        if (/\/cart/i.test(to.path) || /\/index/i.test(from.path)) {
+        if (
+          /\/order/i.test(to.path) && /\/detail/i.test(from.path) ||
+          /\/address/i.test(to.path) && /\/order/i.test(from.path) ||
+          /\/cart/i.test(to.path) || /\/index/i.test(from.path)
+        ) {
           this.transitionName = 'slide-left';
+          console.log('left');
         }
       }
     }

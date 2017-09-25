@@ -1,6 +1,5 @@
 <template>
   <div class="cart">
-    <mi-header></mi-header>
     <div class="main">
       <div class="login">登录后享受更多优惠<span style="float: right">去登录></span></div>
       <div class="item-box" v-for="(item, index) in list">
@@ -25,14 +24,10 @@
 </template>
 
 <script>
-  import header from '../components/cart/header';
   import data from '../../data';
   export default {
-    components: {
-      'mi-header': header
-    },
     created () {
-      this.list = this.changeDataFunc(data.goods['001'].list);
+      this.list = this.changeDataFunc(data.cartList);
     },
     data () {
       return {

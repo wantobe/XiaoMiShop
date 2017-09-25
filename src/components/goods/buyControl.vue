@@ -2,50 +2,44 @@
   <div>
     <div class="buy-control">
       <div class="title">{{ goodsAttr.title }}</div>
+      <div class="desc">
+        <span class="tag">{{ goodsAttr.cate }}</span>
+        <span>{{ goodsAttr.description }}</span>
+      </div>
       <el-row>
-        <el-col :span="14">
-          <div class="price">{{ goodsAttr.price }}元  12<span>积分</span></div>
+        <el-col :span="15">
+          <div class="price">{{ goodsAttr.points }}<span class="point">积分</span></div>
+          <div class="price vice"><span>市场参考价：{{ goodsAttr.price }}元</span></div>
         </el-col>
-        <el-col :span="10">
-          <div class="number">
-            <span class="can" @click="resEvent">-</span>
-            <span>{{num}}</span>
-            <span class="can" @click="addEvent">+</span>
+        <el-col :span="9">
+          <div class="add-btn">
+            <el-button type="primary" @click="buyEvent">我要兑换</el-button>
           </div>
         </el-col>
       </el-row>
 
-      <div class="desc">
-        <span class="tag">【{{ goodsAttr.desc.tag }}】</span>
-        <span>{{ goodsAttr.desc.sc }}</span>
-      </div>
-      <!--<div class="attr">-->
-        <!--<ul>-->
-          <!--<li :class="{active: index === colorIndex}"-->
-              <!--v-for="(item, index) in goodsAttr.attr.color"-->
-              <!--@click="checkColorEvent(index)">{{ item.text }}-->
-          <!--</li>-->
-        <!--</ul>-->
-        <!--<ul>-->
-          <!--<li :class="{active: index === ramIndex}"-->
-              <!--v-for="(item, index) in goodsAttr.attr.ram"-->
-              <!--@click="checkRamEvent(index)">{{ item.text }}-->
-          <!--</li>-->
-        <!--</ul>-->
-      <!--</div>-->
-      <el-row type="flex" class="row-bg" justify="center">
-        <el-col :span="12" justify="center">
-          <el-button type="primary" @click="buyEvent" class="add-btn">加入购物车</el-button>
-        </el-col>
-      </el-row>
     </div>
 
-    <mi-model ref="alert" type="confirm" @confirmEvent="">
+    <mi-model ref="alert" type="confirm" @confirmEvent="submitBuyInfo">
       <div slot="confirm" class="alert">
         <h5>您选择的产品</h5>
         <h6>{{ popInfo.title }}</h6>
-        <p>数量：{{num}}</p>
-        <p>{{ popInfo.ram }}　　{{ popInfo.color }}</p>
+        <div class="order-check">
+          <div class="item">
+            <span>数量：</span>
+            <div class="number">
+              <span class="can" @click="resEvent">-</span>
+              <span class="text">{{num}}</span>
+              <span class="can" @click="addEvent">+</span>
+            </div>
+          </div>
+          <div class="item">
+            <span>小计:</span>
+            <div class="number">
+              {{goodsAttr.points * num}} <em>积分</em>
+            </div>
+          </div>
+        </div>
       </div>
     </mi-model>
   </div>
@@ -54,11 +48,9 @@
 <script>
   import model from '../../components/model';
   export default {
-    props: ['goodsAttr'],
+    props: ['goodsAttr', 'show_search_bar'],
     data () {
       return {
-        colorIndex: 0,
-        ramIndex: 0,
         popInfo: {},
         num: 1
       };
@@ -66,28 +58,26 @@
     components: {
       'mi-model': model
     },
-    created () {
-      this.$root.$on('currentgoods', function (goods) {
-        console.log('current goods', goods);
-      });
-    },
     methods: {
-      checkColorEvent (num) {
-        this.colorIndex = num;
-      },
-      checkRamEvent (num) {
-        this.ramIndex = num;
-      },
-      submitBuyInfo () {
-        var ram = this.goodsAttr.attr.ram[this.ramIndex];
-        var color = this.goodsAttr.attr.color[this.colorIndex];
-        return {ram: ram, color: color};
+      submitBuyInfo (b) {
+        let id = this.$route.params.id;
+        if (b) {
+          let goodsAttr = this.$props.goodsAttr;
+          let query = {
+            thumb: goodsAttr.thumb,
+            title: goodsAttr.title,
+            points: goodsAttr.points,
+            price: goodsAttr.price,
+            num: this.num
+          };
+          this.$router.push({
+            path: '/order/' + id, query: query
+          });
+        }
       },
       buyEvent () {
         this.popInfo = {
-          ram: this.goodsAttr.attr.ram[this.ramIndex].text,
-          color: this.goodsAttr.attr.color[this.colorIndex].text,
-          title: this.goodsAttr.title,
+          title: this.$props.goodsAttr.title,
           num: this.num
         };
         this.$refs.alert.modelOpen();
@@ -115,12 +105,20 @@
       font-size: 15px;
     }
     .price {
-      font-size: 16px;
+      font-size: 18px;
       color: #FF5722;
-      line-height: 32px;
+      line-height: 24px;
       span{
-        font-size:10px;
+        font-size:12px;
         color:#ccc;
+        &.point {
+          color: #666;
+          padding-left: 10px;
+          font-size:14px;
+        }
+      }
+      &.vice {
+        line-height:16px;
       }
     }
     .desc {
@@ -129,11 +127,11 @@
       .tag {
         color: #FF5722;
       }
-      margin: 10px 0;
+      margin: 5px 0;
     }
     .add-btn{
-      width: 100%;
-      margin: 10px;
+      margin: 5px;
+      text-align: right;
     }
     .attr {
       width: 100%;
@@ -156,30 +154,49 @@
         }
       }
     }
-    .number {
-      float: right;
-      line-height: 30px;
-      span {
-        border: 1px solid #eee;
-        text-align: center;
-        width: 30px;
-        height: 30px;
-        display: inline-block;
-        margin: 0 2px;
-        &.can {
-          &:active {
-            background: #eee;
-          }
+  }
+
+  .order-check {
+    width: 90%;
+    margin: 0 auto;
+    .item {
+      height: 36px;
+      line-height: 36px;
+      clear: both;
+      .number {
+        float: right;
+        line-height: 30px;
+        em {
+          font-style: normal;
+          font-size:0.8em;
         }
-        &.r {
-          float: right;
-          &:active {
-            background: #eee;
+        span {
+          border: 1px solid #eee;
+          text-align: center;
+          width: 30px;
+          height: 30px;
+          display: inline-block;
+          margin: 0 2px;
+          &.text {
+            border: none;
+          }
+          &.can {
+            &:active {
+              background: #eee;
+            }
+          }
+          &.r {
+            float: right;
+            &:active {
+              background: #eee;
+            }
           }
         }
       }
     }
   }
+
+
 
 
 </style>

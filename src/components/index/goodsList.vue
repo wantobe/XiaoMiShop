@@ -1,8 +1,5 @@
 <template>
   <div class="goods-box">
-    <div class="starBanner">
-      <a :href="goodsData.bannerLink"><img :src="goodsData.bannerImg"/></a>
-    </div>
     <el-row :gutter="10" class="goodslist" v-loading="loading">
       <el-col :span="12"
               v-for="(goods, index) in goodsData.list"
@@ -41,7 +38,6 @@
     methods: {
       productEvent (goods) {
         this.$router.push({path: '/detail/' + goods.id});
-        this.$root.$emit('currentgoods', goods);
       },
       fetchData (url, id) {
         let vm = this;
@@ -137,13 +133,5 @@
     height: 100%;
     width: 100%;
     font-family: "Microsoft Yahei";
-    .starBanner {
-      padding-top: 10px;
-      width: 100%;
-      font-size: 0;
-      .img100;
-    }
-
-
   }
 </style>

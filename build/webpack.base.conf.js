@@ -10,7 +10,7 @@ var cssSourceMapDev = (env === 'development' && config.dev.cssSourceMap);
 var cssSourceMapProd = (env === 'production' && config.build.productionSourceMap);
 var useCssSourceMap = cssSourceMapDev || cssSourceMapProd;
 
-module.exports = {
+const webpackConfig = {
   entry: {
     app: './src/main.js'
   },
@@ -30,7 +30,7 @@ module.exports = {
     }
   },
   devServer:{
-    host:"192.168.175.103",
+    host:"localhost",
     filename: "index.js",
     publicPath: "/dist/",
     historyApiFallback:true,
@@ -109,3 +109,9 @@ module.exports = {
     ]
   }
 };
+
+const vuxLoader = require('vux-loader');
+
+module.exports = vuxLoader.merge(webpackConfig, {
+  plugins: ['vux-ui']
+});

@@ -2,13 +2,12 @@
   <div class="img">
     <div class="control">
       <div class="left hook" @click="goBackEvent"></div>
-      <div class="right hook" @click="addCartEvent"></div>
-      <!--<div class="right hook" @click="goodSearchEvent"></div>-->
+      <div class="right hook" @click="goodSearchEvent"></div>
     </div>
 
     <div class="swiper-container" ref="a">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="item in bannerList"><img :src="item"/></div>
+        <div class="swiper-slide" v-for="item in sliderData"><img :src="item"/></div>
       </div>
       <div class="swiper-pagination"></div>
     </div>
@@ -22,36 +21,36 @@
 </template>
 <script>
   import Swiper from '../../../lib/swiper.js';
-  import data from '../../../data.json';
   export default {
+    props: ['sliderData'],
     data () {
       return {
         bannerList: []
       };
     },
     components: {},
-    created () {
-      this.bannerList = data.detail.img;
-    },
     methods: {
       goBackEvent () {
-        this.$router.go(-1);
+        this.$router.push('/');
       },
       goodSearchEvent () {
-        this.$router.push({path: '/index', query: {sign: 1}});
+//        this.$router.push({path: '/index', query: {sign: 1}});
+        this.$parent.handleFocus();
       },
       addCartEvent () {
         this.$router.push({path: '/cart'});
       }
     },
     mounted () {
-      var mySwiper = new Swiper(this.$refs.a, {
-        loop: true,
-        autoplay: 3000,
-        pagination: '.swiper-pagination',
-        autoplayDisableOnInteraction: false
-      });
-      console.log(mySwiper);
+      let vm = this;
+      setTimeout(function () {
+        Swiper(vm.$refs.a, {
+          loop: true,
+          autoplay: 3000,
+          pagination: '.swiper-pagination',
+          autoplayDisableOnInteraction: false
+        });
+      }, 500);
     }
   };
 </script>
@@ -86,8 +85,7 @@
         }
         &.right {
           float: right;
-          /*background: rgba(0, 0, 0, 0.5) url("../../images/svg/search1.svg") no-repeat center center;*/
-          background:  rgba(0, 0, 0, 0.5) url("../../images/svg/cart.svg") no-repeat center center;
+          background: rgba(0, 0, 0, 0.5) url("../../images/svg/search1.svg") no-repeat center center;
           background-size: 15px;
         }
       }

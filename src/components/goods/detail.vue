@@ -1,28 +1,29 @@
 <template>
   <div>
-    <div class="tab">
+    <!--<div class="tab">
       <span :class="{'active': tabState}" @click="tabEvent1">商品详情</span>
       <span :class="{'active': !tabState}" @click="tabEvent2">温馨提示</span>
+    </div>-->
+    <div class="tab" style="text-align:center">
+      <span class="active" style="border-right:none">商品详情</span>
     </div>
     <div class="detail" v-show="tabState">
-      <img :src="item" v-for="item in detailList"/>
+      <img :src="item" v-for="item in detailData.imgs"/>
     </div>
-    <div class="attr" v-show="!tabState">
-      <img :src="item" v-for="item in attrList"/>
-    </div>
+    <!--<div class="attr" v-show="!tabState">-->
+      <!--<img :src="item" v-for="item in attrList"/>-->
+    <!--</div>-->
   </div>
 </template>
 <script>
   export default {
     props: ['detailData'],
     created () {
-      this.detailList = this.detailData.detailList;
       this.attrList = this.detailData.attrList;
     },
     data () {
       return {
         tabState: true,
-        detailList: [],
         attrList: []
       };
     },

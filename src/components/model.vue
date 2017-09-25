@@ -57,8 +57,8 @@
                                     <slot name="confirm"></slot>
                                 </div>
                                 <div class="bottom">
-                                    <button @click="confirm_BtnEvent(1)" class="radius-left">确 认</button>
-                                    <button @click="confirm_BtnEvent(0)" class="radius-right">取 消</button>
+                                    <button @click="confirm_BtnEvent(0)" class="radius-left">取 消</button>
+                                  <button @click="confirm_BtnEvent(1)" class="radius-right">确 认</button>
                                 </div>
                             </div>
                         </div>
@@ -107,8 +107,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
-
-
     .screen1 {
         width: 100%;
         height: 100%;

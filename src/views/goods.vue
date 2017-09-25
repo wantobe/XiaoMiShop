@@ -1,28 +1,53 @@
 <template>
   <div class="wripper">
-    <mi-img></mi-img>
+    <mi-header @searchEvent="searchHandle" :opac="headerOpacity" :screen="focus" v-show="focus" ref="search_bar">
+      <div slot="header_left" class="left">
+        <i class="el-icon-arrow-left" v-show="focus" @click="goBackEvent"></i>
+      </div>
+      <div slot="header_center" class="center">
+        <input type="text" class="border" @focus="handleFocus" v-model="inputText"/>
+      </div>
+      <div slot="header_right" class="right">
+        <i class="el-icon-search"></i>
+      </div>
+      <div slot="header_main" class="main" v-show="focus">
+        <div class="title">热门搜索</div>
+        <!--<img :src="searchImg">-->
+        <ul>
+          <li v-for="item in hotWord" @click="inputFillEvent(item)">{{ item }}</li>
+        </ul>
+      </div>
+    </mi-header>
+    <mi-img :sliderData="sliderData"></mi-img>
     <mi-buyControl :goodsAttr="goodsAttr" ref="control"></mi-buyControl>
     <mi-detail :detailData="detailData"></mi-detail>
   </div>
 </template>
 <script>
+  import header from '../components/header';
   import img from '../components/goods/img';
   import buyControl from '../components/goods/buyControl';
   import detail from '../components/goods/detail';
-  import data from '../../data';
 
   export default {
     components: {
+      'mi-header': header,
       'mi-img': img,
       'mi-buyControl': buyControl,
       'mi-detail': detail
     },
     created () {
-      this.detailData = data.detail;
-      this.goodsAttr = data.detail.goodsAttr;
+      this.fetchData(this.$root.api.detail, this.$route.params.id);
+    },
+    mounted () {
     },
     data () {
       return {
+        focus: false,
+        inputText: '',
+        hotWord: ['红米4 超长续航', '小米Note 2', '小米5s', '笔记本', '小米电视3s', '智能电饭煲'],
+        headerOpacity: 1,
+        sliderData: [],
         detailData: [],
         goodsAttr: {},
         searchState: false,
@@ -34,13 +59,36 @@
         this.$router.replace({path: '/index'});
       },
       searchHandle (Boolean) {
-        if (Boolean) {
-          this.searchState = true;
-        } else {
-          this.searchState = false;
-        }
+          this.searchState = Boolean;
+      },
+      fetchData (url, id) {
+        let vm = this;
+        this.$http.get(url, {
+          params: {id: id}
+        })
+          .then(response => {
+            console.log('detail', response.data);
+            vm.goodsAttr = response.data;
+            vm.detailData = response.data.detail;
+            vm.sliderData = response.data.slider;
+          })
+          .catch(e => {
+            console.log(e);
+          });
+      },
+      handleFocus () {
+        this.focus = true;
+        this.$emit('searchEvent', true);
+      },
+      goBackEvent () {
+        this.focus = false;
+        this.$emit('searchEvent', false);
+      },
+      inputFillEvent (word) {
+        this.inputText = word;
       }
     }
+
   };
 </script>
 
