@@ -70,7 +70,7 @@
 </template>
 <script>
   import header from '../../components/header';
-  import myCell from '../../components/order/cell';
+  import myCell from '../../components/order/my_cell';
   import { Group, XAddress, ChinaAddressV4Data, Cell, XButton, XInput, Value2nameFilter as value2name } from 'vux';
 
   export default {

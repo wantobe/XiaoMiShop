@@ -56,7 +56,7 @@
 
 <script>
   import header from '../components/header';
-  import cell from '../components/order/cell';
+  import cell from '../components/order/my_cell';
 
   export default {
     data () {

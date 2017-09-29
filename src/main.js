@@ -3,8 +3,10 @@ import VueResource from 'vue-resource';
 import App from './App';
 import Index from './views/index';
 import Goods from './views/goods';
-import Cart from './views/cart';
+// import Cart from './views/cart';
 import Order from './views/order';
+import Food from './views/food';
+import Course from './views/course';
 import Address from './components/order/address';
 
 import VueRouter from 'vue-router';
@@ -20,9 +22,11 @@ const routes = [
   {path: '/index', component: Index},
   {path: '/index/:cateId', component: Index},
   {path: '/detail/:id', component: Goods},
-  {path: '/cart', component: Cart},
+  // {path: '/cart', component: Cart},
   {path: '/order/:id', component: Order},
-  {path: '/address/:action', component: Address}
+  {path: '/address/:action', component: Address},
+  {path: '/course/:theme', component: Course},
+  {path: '/food/:theme', component: Food}
 ];
 
 const router = new VueRouter({
@@ -35,7 +39,8 @@ const data = {
     goods: 'http://rapapi.org/mockjsdata/25098/api/goods/',  // 首页测试接口
     detail: 'http://rapapi.org/mockjsdata/25098/api/detail/',  // 详情页测试接口
     banner: 'http://rapapi.org/mockjsdata/25098/api/banner/',  // 广告测试接口
-    address: 'http://rapapi.org/mockjsdata/25098/api/address/{action}'  // 地址测试接口
+    address: 'http://rapapi.org/mockjsdata/25098/api/address/{action}',  // 地址测试接口
+    food: 'http://rapapi.org/mockjsdata/25098/api/food/'  // 菜谱测试接口
   }
 };
 
