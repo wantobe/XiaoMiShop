@@ -1,18 +1,18 @@
 <template>
   <div class="food">
-    <x-header class="top" :class="theme_color" :left-options="{backText:''}">
+    <x-header class="top" :class="theme_color"
+              :left-options="{backText:'', preventGoBack:true}"
+              @on-click-back="foodBack()">
       <div class="overwrite-title-demo" slot="default">今日食谱</div>
-      <div class="icon"  slot="right">
-        <img src="/static/images/food_course/topbar_food@3x.png" alt="">
+      <div class="icon"  slot="right" v-if="!graph" alt="" @click="showImage()">
+        <img src="/static/images/food_course/topbar_food@3x.png">
       </div>
     </x-header>
     <x-header v-if="!graph" class="bottom"  :class="theme_color"
               :left-options="{showBack:false}">
       <div class="overwrite-title-demo" slot="default">{{foodList.date}}</div>
-      <div class="icon" slot="right"
-           @click.native="showImage()"
-      >
-        <img :src="'/static/images/food_course/date_calendar' + (this.theme_color === 'orange' ? '_orange' : '') + '@3x.png'" alt="">
+      <div class="icon" slot="right">
+        <img :src="'/static/images/food_course/date_calendar' + (theme_color === 'orange' ? '_orange' : '') + '@3x.png'" alt="">
       </div>
     </x-header>
 
@@ -25,7 +25,7 @@
           <el-row class="item" v-for="(item, key) in foodList.data">
             <el-col :span="4" class="icon">
               <img :src="'../../static/images/food_course/' + key + 'icon@3x.png'" alt="">
-              <p :class="theme_color">{{key=='lunch'?'午餐':'晚餐'}}</p>
+              <p :class="theme_color">{{cateName(key)}}</p>
             </el-col>
             <el-col :span="20" class="list">
               <p v-for="index in item.length/2">
@@ -85,7 +85,7 @@
     data () {
       return {
         foodList: {},
-        graph: true, // 是否图形化
+        graph: false, // 是否图形化
         theme_color: this.$route.params.theme === 'teacher' ? 'orange' : 'green',
         cate_name: ''
       };
@@ -94,6 +94,13 @@
       this.fetchData(this.$root.api.food, new Date());
     },
     methods: {
+      foodBack () {
+        if (this.graph) {
+          this.graph = false;
+        } else {
+          this.$router.go(-1);
+        }
+      },
       showImage () {
         this.graph = !this.graph;
         console.log(this.graph);
@@ -142,13 +149,12 @@
   @color_green: rgb(123,198,16);
   @color_green_light: rgb(228,243,206);
 
+
   .vux-header {
-    .vux-header-left .left-arrow {
-      .left-arrow {
-        color: #fff;
-        &:before {
-          border: 1px solid #fff;
-        }
+    .vux-header-left {
+      .left-arrow:before {
+        border: 1px solid #fff!important;
+        border-width: 1px 0 0 1px!important;
       }
     }
     &.top {
