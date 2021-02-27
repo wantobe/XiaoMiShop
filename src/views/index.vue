@@ -68,7 +68,7 @@
         loadingUI: this.$loading({
           fullscreen: true,
           lock: true,
-          text: '数据载入中...'
+          text: '数据载入中....'
         }),
         body: {},
         scrollX: 0,
